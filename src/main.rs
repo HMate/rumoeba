@@ -31,13 +31,13 @@ enum GameOption {
 }
 
 impl std::str::FromStr for GameOption {
-    type Err = u32;
+    type Err = ();
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
-        match &s[..] {
+        match s {
             "1" => Ok(GameOption::Start),
             "2" => Ok(GameOption::Exit),
-            _ => Err(2)
+            _ => Err(())
         }
     }
 }
@@ -49,6 +49,9 @@ fn show_game_options() {
 
 fn choose_game_option() -> Option<GameOption> {
     let mut user_input = String::new();
-    std::io::stdin().read_line(&mut user_input).unwrap();
+    if std::io::stdin().read_line(&mut user_input).is_err(){
+        // logging?
+        return Option::None;
+    }
     user_input.trim().parse::<GameOption>().ok()
 }
