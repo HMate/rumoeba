@@ -1,3 +1,6 @@
+use rumoeba::{start_game};
+use rumoeba::ui;
+
 fn main() {
     show_greeting_messages();
 
@@ -5,13 +8,16 @@ fn main() {
     loop {
         match choose_game_option() {
             None => {
-                println!("Hm nice try, but I'm afraid I don't know what you mean.")
+                ui::show_message("Hm nice try, but I'm afraid I don't know what you mean.")
             }
             Some(option) => {
                 match option {
-                    GameOption::Start => println!("That was a good ride."),
+                    GameOption::Start => {
+                        start_game();
+                        ui::show_message("That was a good ride.")
+                    },
                     GameOption::Exit => {
-                        println!("See you soon! Take care of yourself Tiger 😉");
+                        ui::show_message("See you soon! Take care of yourself Tiger 😉");
                         break;
                     }
                 }
@@ -21,8 +27,9 @@ fn main() {
 }
 
 fn show_greeting_messages() {
-    println!("Welcome dear visitor in the worlds most ambitious, most violent, most demanding game .. OF .. RUMOEBA!");
-    println!("But first things first. Please humble me with giving your first choice.");
+    ui::show_message("Welcome dear visitor in the worlds most ambitious, \
+    most violent, most demanding game .. OF .. RUMOEBA!");
+    ui::show_message("But first things first. Please humble me with giving your first choice.");
 }
 
 enum GameOption {
@@ -43,8 +50,8 @@ impl std::str::FromStr for GameOption {
 }
 
 fn show_game_options() {
-    println!("1) Start RUMOEBA!");
-    println!("2) Exit");
+    ui::show_message("1) Start RUMOEBA!");
+    ui::show_message("2) Exit");
 }
 
 fn choose_game_option() -> Option<GameOption> {
