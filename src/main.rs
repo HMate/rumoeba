@@ -1,4 +1,4 @@
-use rumoeba::{start_game};
+use rumoeba::start_game;
 use rumoeba::ui;
 
 fn main() {
@@ -15,7 +15,7 @@ fn main() {
                     GameOption::Start => {
                         start_game();
                         ui::show_message("That was a good ride.")
-                    },
+                    }
                     GameOption::Exit => {
                         ui::show_message("See you soon! Take care of yourself Tiger 😉");
                         break;
@@ -56,7 +56,7 @@ fn show_game_options() {
 
 fn choose_game_option() -> Option<GameOption> {
     let mut user_input = String::new();
-    if std::io::stdin().read_line(&mut user_input).is_err(){
+    if std::io::stdin().read_line(&mut user_input).is_err() {
         // logging?
         return Option::None;
     }
