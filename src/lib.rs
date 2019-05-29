@@ -9,7 +9,7 @@ pub fn start_game() {
 
     ui::show_message(&format!("Let the game begin! {}", board_size));
 
-    let board = game_board::Board { size: board_size };
+    let board = game_board::Board::new(board_size);
     ui::show_board(board);
     //loop {}
 }
