@@ -1,36 +1,25 @@
+pub use crate::xogame::XOGame;
 use crate::game_board::BoardSizeT;
 
 pub mod ui;
+pub mod xogame;
 mod game_board;
 
 const MIN_BOARD_SIZE: BoardSizeT = 3;
 const MAX_BOARD_SIZE: BoardSizeT = 25;
 
-pub struct XOGame {
-
-}
-
-impl XOGame {
-    pub fn new(board_size: BoardSizeT, player_uno: &Player, player_dos: &Player) -> XOGame {
-        return XOGame{};
-    }
-
-    pub fn place(&self, player: &Player, x: BoardSizeT, y: BoardSizeT) {
-
-    }
-
-    pub fn finished(&self) -> bool {
-        true
-    }
-}
-
+#[derive(Debug, PartialEq)]
 pub struct Player {
-
+    name: String
 }
 
 impl Player {
     pub fn new(name: &str) -> Player {
-        return Player{};
+        return Player{name: String::from(name)};
+    }
+
+    pub fn name(&self) -> &String {
+        return &self.name;
     }
 }
 
@@ -57,5 +46,17 @@ fn read_board_size() -> BoardSizeT {
                 return parsed_number;
             }
         }
+    }
+}
+
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn get_player_name() {
+        let p = Player::new("Kose");
+        assert_eq!("Kose", p.name());
     }
 }
