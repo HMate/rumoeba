@@ -15,7 +15,7 @@ pub struct Player {
 
 impl Player {
     pub fn new(name: &str) -> Player {
-        return Player{name: String::from(name)};
+        return Player{name: name.to_string()};
     }
 
     pub fn name(&self) -> &String {

@@ -1,4 +1,4 @@
-pub type BoardSizeT = usize;
+pub type BoardSizeT = i32;
 
 pub struct Board {
     size: BoardSizeT,
@@ -16,7 +16,7 @@ impl Board {
     pub fn new(size: BoardSizeT) -> Board {
         Board {
             size,
-            slots: vec![Mark::Unmarked; size * size],
+            slots: vec![Mark::Unmarked; (size * size) as usize],
         }
     }
 
@@ -35,7 +35,7 @@ impl Board {
     /// assert_eq!(b.read(2, 1), Mark::Unmarked);
     /// ```
     pub fn read(&self, x: BoardSizeT, y: BoardSizeT) -> Mark {
-        return self.slots[y * self.size + x];
+        return self.slots[self.ref_mark_on_pos(x, y)];
     }
 
     /// Marks the given position.
@@ -49,7 +49,12 @@ impl Board {
     /// assert_eq!(b.read(2, 1), Mark::O);
     /// ```
     pub fn mark(&mut self, x: BoardSizeT, y: BoardSizeT, mark: Mark) {
-        self.slots[y * self.size + x] = mark;
+        let index = self.ref_mark_on_pos(x, y);
+        self.slots[index] = mark;
+    }
+
+    fn ref_mark_on_pos(&self, x: BoardSizeT, y: BoardSizeT) -> usize {
+        (y * self.size + x) as usize
     }
 }
 
@@ -60,20 +65,20 @@ mod tests {
     #[test]
     fn get_size() {
         let b = Board::new(5);
-        assert_eq!(5, b.size());
+        assert_eq!(b.size(), 5);
     }
 
     #[test]
     fn get_mark() {
         let b = Board::new(5);
-        assert_eq!(Mark::Unmarked, b.read(3, 3));
+        assert_eq!(b.read(3, 3), Mark::Unmarked);
     }
 
     #[test]
     fn get_mark_x() {
         let mut b = Board::new(7);
         b.mark(3, 6, Mark::X);
-        assert_eq!(Mark::X, b.read(3, 6));
+        assert_eq!(b.read(3, 6), Mark::X);
     }
 
     #[test]
