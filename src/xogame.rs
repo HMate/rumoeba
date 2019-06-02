@@ -25,9 +25,13 @@ impl<'a> XOGame<'a> {
         };
     }
 
-    pub fn place(&mut self, player: &'a Player, x: BoardSizeT, y: BoardSizeT) -> Result<(), ()> {
+    pub fn board(&self) -> &Board {
+        &self.board
+    }
+
+    pub fn place(&mut self, player: &'a Player, x: BoardSizeT, y: BoardSizeT) -> Result<(), &'static str> {
         if self.board.read(x, y) != Mark::Unmarked {
-            return Err(());
+            return Err("Already placed on this tile!");
         }
         self.board.mark(x, y, self.get_player_mark(player));
 
@@ -165,63 +169,66 @@ mod tests {
     use super::*;
 
     #[test]
-    fn play_game() {
+    fn play_game() -> Result<(), &'static str> {
         let player1 = Player::new("SeeZee");
         let player2 = Player::new("Moak");
         let mut game = XOGame::new(3, &player1, &player2);
 
-        game.place(&player1, 1, 1);
-        game.place(&player2, 1, 2);
-        game.place(&player1, 0, 1);
-        game.place(&player2, 2, 1);
-        game.place(&player1, 0, 0);
-        game.place(&player2, 2, 2);
-        game.place(&player1, 0, 2);
+        game.place(&player1, 1, 1)?;
+        game.place(&player2, 1, 2)?;
+        game.place(&player1, 0, 1)?;
+        game.place(&player2, 2, 1)?;
+        game.place(&player1, 0, 0)?;
+        game.place(&player2, 2, 2)?;
+        game.place(&player1, 0, 2)?;
         assert!(game.finished());
         assert_eq!(game.winner(), GameResult::Player1);
+        Ok(())
     }
 
     #[test]
-    fn play_game_4() {
+    fn play_game_4() -> Result<(), &'static str>  {
         let player1 = Player::new("SeeZee");
         let player2 = Player::new("Moak");
         let mut game = XOGame::new(4, &player1, &player2);
 
-        game.place(&player1, 1, 1);
-        game.place(&player2, 1, 2);
-        game.place(&player1, 2, 2);
-        game.place(&player2, 2, 1);
-        game.place(&player1, 0, 0);
+        game.place(&player1, 1, 1)?;
+        game.place(&player2, 1, 2)?;
+        game.place(&player1, 2, 2)?;
+        game.place(&player2, 2, 1)?;
+        game.place(&player1, 0, 0)?;
         assert!(!game.finished());
-        game.place(&player2, 3, 0);
+        game.place(&player2, 3, 0)?;
         assert!(!game.finished());
-        game.place(&player1, 3, 3);
+        game.place(&player1, 3, 3)?;
         assert!(game.finished());
+        Ok(())
     }
 
     #[test]
-    fn play_game_5() {
+    fn play_game_5() -> Result<(), &'static str>  {
         let player1 = Player::new("SeeZee");
         let player2 = Player::new("Moak");
         let mut game = XOGame::new(15, &player1, &player2);
 
-        game.place(&player1, 7, 7);
-        game.place(&player2, 8, 7);
-        game.place(&player1, 7, 6);
-        game.place(&player2, 7, 8);
-        game.place(&player1, 8, 6);
-        game.place(&player2, 9, 6);
-        game.place(&player1, 6, 9);
-        game.place(&player2, 9, 8);
-        game.place(&player1, 8, 8);
-        game.place(&player2, 9, 7);
-        game.place(&player1, 6, 6);
-        game.place(&player2, 9, 9);
-        game.place(&player1, 5, 6);
+        game.place(&player1, 7, 7)?;
+        game.place(&player2, 8, 7)?;
+        game.place(&player1, 7, 6)?;
+        game.place(&player2, 7, 8)?;
+        game.place(&player1, 8, 6)?;
+        game.place(&player2, 9, 6)?;
+        game.place(&player1, 6, 9)?;
+        game.place(&player2, 9, 8)?;
+        game.place(&player1, 8, 8)?;
+        game.place(&player2, 9, 7)?;
+        game.place(&player1, 6, 6)?;
+        game.place(&player2, 9, 9)?;
+        game.place(&player1, 5, 6)?;
         assert!(!game.finished());
-        game.place(&player2, 9, 10);
+        game.place(&player2, 9, 10)?;
         assert!(game.finished());
         assert_eq!(game.winner(), GameResult::Player2);
+        Ok(())
     }
 
     #[test]

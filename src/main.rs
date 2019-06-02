@@ -14,7 +14,8 @@ fn main() {
                 match option {
                     GameOption::Start => {
                         start_game();
-                        ui::show_message("That was a good ride.")
+                        ui::show_message("That was a good ride. Another one?");
+                        show_game_options();
                     }
                     GameOption::Exit => {
                         ui::show_message("See you soon! Take care of yourself Tiger 😉");
