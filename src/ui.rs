@@ -16,8 +16,15 @@ pub fn show_message_cursor_at_end(msg: &str) {
 
 pub fn draw_board(board: &game_board::Board) -> String {
     let size = board.size();
-    let mut result = String::with_capacity((size * (size + 3)) as usize);
+    let mut result = String::with_capacity(((size + 3) * (size + 4)) as usize);
+    result.push_str("Y\\X");
+    for x in 0..size {
+        result.push_str(&format!("{:^3}", x+1));
+    }
+    result.push('\n');
+
     for y in (0..size).rev() {
+        result.push_str(&format!("{:>3}", y+1));
         for x in 0..size {
             match board.read(x, y) {
                 game_board::Mark::X => result.push_str("|X|"),
@@ -25,8 +32,13 @@ pub fn draw_board(board: &game_board::Board) -> String {
                 game_board::Mark::Unmarked => result.push_str("|_|")
             };
         }
-        result.push('\n');
+        result.push_str(&format!("{}\n", y+1));
     }
+    result.push_str("   ");
+    for x in 0..size {
+        result.push_str(&format!("{:^3}", x+1));
+    }
+
     result
 }
 
@@ -37,11 +49,11 @@ mod tests {
     #[test]
     fn show_board_empty() {
         let b = game_board::Board::new(3);
-        let expected = "\
-|_||_||_|
-|_||_||_|
-|_||_||_|
-";
+        let expected =  String::from("Y\\X 1  2  3 ") + "
+  3|_||_||_|3
+  2|_||_||_|2
+  1|_||_||_|1" + "
+    1  2  3 ";
         let actual = draw_board(&b);
         assert_eq!(actual, expected);
     }
@@ -53,11 +65,11 @@ mod tests {
         b.mark(0, 1, game_board::Mark::O);
         b.mark(1, 1, game_board::Mark::X);
         b.mark(2, 2, game_board::Mark::O);
-        let expected = "\
-|_||_||O|
-|O||X||_|
-|X||_||_|
-";
+        let expected = String::from("Y\\X 1  2  3 ") + "
+  3|_||_||O|3
+  2|O||X||_|2
+  1|X||_||_|1" + "
+    1  2  3 ";
         let actual = draw_board(&b);
         assert_eq!(actual, expected);
     }

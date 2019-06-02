@@ -73,7 +73,7 @@ fn read_board_size() -> BoardSizeT {
         }
         if let Ok(parsed_number) = user_input.trim().parse::<BoardSizeT>() {
             if MIN_BOARD_SIZE <= parsed_number && parsed_number < MAX_BOARD_SIZE {
-                return parsed_number-1;
+                return parsed_number;
             }
         }
     }
@@ -87,7 +87,7 @@ fn read_move(board_size: BoardSizeT) -> BoardSizeT {
         }
         if let Ok(parsed_number) = user_input.trim().parse::<BoardSizeT>() {
             if 1 <= parsed_number && parsed_number <= board_size {
-                return parsed_number;
+                return parsed_number-1;
             }
         }
     }
