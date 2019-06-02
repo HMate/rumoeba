@@ -1,4 +1,5 @@
 use rumoeba::start_game;
+use rumoeba::awesome_mode;
 use rumoeba::ui;
 
 fn main() {
@@ -16,7 +17,12 @@ fn main() {
                         start_game();
                         ui::show_message("That was a good ride. Another one?");
                         show_game_options();
-                    }
+                    },
+                    GameOption::StartAwesomeMode => {
+                        awesome_mode::start_awesome();
+                        ui::show_message("That. Was. AWESOME! AGAIN!");
+                        show_game_options();
+                    },
                     GameOption::Exit => {
                         ui::show_message("See you soon! Take care of yourself Tiger 😉");
                         break;
@@ -35,6 +41,7 @@ fn show_greeting_messages() {
 
 enum GameOption {
     Start,
+    StartAwesomeMode,
     Exit,
 }
 
@@ -44,7 +51,8 @@ impl std::str::FromStr for GameOption {
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         match s {
             "1" => Ok(GameOption::Start),
-            "2" => Ok(GameOption::Exit),
+            "2" => Ok(GameOption::StartAwesomeMode),
+            "3" => Ok(GameOption::Exit),
             _ => Err(())
         }
     }
@@ -52,7 +60,8 @@ impl std::str::FromStr for GameOption {
 
 fn show_game_options() {
     ui::show_message("1) Start RUMOEBA!");
-    ui::show_message("2) Exit");
+    ui::show_message("2) Start RUMOEBA IN AWESOME MODE!!4!");
+    ui::show_message("3) Exit!");
 }
 
 fn choose_game_option() -> Option<GameOption> {
