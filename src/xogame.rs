@@ -1,6 +1,9 @@
 use crate::game_board::{Board, BoardSizeT, Mark};
 use crate::Player;
 
+pub const MIN_BOARD_SIZE: BoardSizeT = 3;
+pub const MAX_BOARD_SIZE: BoardSizeT = 25;
+
 pub struct XOGame<'a> {
     board: Board,
     player1: &'a Player,
@@ -206,7 +209,7 @@ mod tests {
     }
 
     #[test]
-    fn play_game_5() -> Result<(), &'static str>  {
+    fn play_game_5() -> Result<(), &'static str> {
         let player1 = Player::new("SeeZee");
         let player2 = Player::new("Moak");
         let mut game = XOGame::new(15, &player1, &player2);
@@ -232,23 +235,24 @@ mod tests {
     }
 
     #[test]
-    fn play_game_to_tie() {
+    fn play_game_to_tie() -> Result<(), &'static str> {
         let player1 = Player::new("SeeZee");
         let player2 = Player::new("Moak");
         let mut game = XOGame::new(3, &player1, &player2);
 
-        game.place(&player1, 1, 1);
-        game.place(&player2, 2, 1);
-        game.place(&player1, 0, 1);
-        game.place(&player2, 0, 0);
-        game.place(&player1, 2, 0);
-        game.place(&player2, 0, 2);
-        game.place(&player1, 1, 2);
-        game.place(&player2, 1, 0);
+        game.place(&player1, 1, 1)?;
+        game.place(&player2, 2, 1)?;
+        game.place(&player1, 0, 1)?;
+        game.place(&player2, 0, 0)?;
+        game.place(&player1, 2, 0)?;
+        game.place(&player2, 0, 2)?;
+        game.place(&player1, 1, 2)?;
+        game.place(&player2, 1, 0)?;
         // assert!(game.finished()); //earlies tie detection can be here
-        game.place(&player1, 2, 2);
+        game.place(&player1, 2, 2)?;
         assert!(game.finished());
         assert_eq!(game.winner(), GameResult::Tie);
+        Ok(())
     }
 
     #[test]
@@ -261,63 +265,68 @@ mod tests {
     }
 
     #[test]
-    fn finished_row() {
+    fn finished_row() -> Result<(), &'static str> {
         let player1 = Player::new("SeeZee");
         let player2 = Player::new("Moak");
         let mut game = XOGame::new(3, &player1, &player2);
 
-        game.place(&player1, 0, 0);
-        game.place(&player1, 1, 0);
-        game.place(&player1, 2, 0);
+        game.place(&player1, 0, 0)?;
+        game.place(&player1, 1, 0)?;
+        game.place(&player1, 2, 0)?;
         assert!(game.finished());
+        Ok(())
     }
 
     #[test]
-    fn finished_row_non_continously() {
+    fn finished_row_non_continously() -> Result<(), &'static str> {
         let player1 = Player::new("SeeZee");
         let player2 = Player::new("Moak");
         let mut game = XOGame::new(3, &player1, &player2);
 
-        game.place(&player1, 1, 0);
-        game.place(&player1, 2, 0);
-        game.place(&player1, 0, 1);
+        game.place(&player1, 1, 0)?;
+        game.place(&player1, 2, 0)?;
+        game.place(&player1, 0, 1)?;
         assert!(!game.finished());
+        Ok(())
     }
 
     #[test]
-    fn finished_column() {
+    fn finished_column() -> Result<(), &'static str> {
         let player1 = Player::new("SeeZee");
         let player2 = Player::new("Moak");
         let mut game = XOGame::new(3, &player1, &player2);
 
-        game.place(&player1, 0, 0);
-        game.place(&player1, 0, 1);
-        game.place(&player1, 0, 2);
+        game.place(&player1, 0, 0)?;
+        game.place(&player1, 0, 1)?;
+        game.place(&player1, 0, 2)?;
         assert!(game.finished());
+        Ok(())
     }
 
     #[test]
-    fn finished_even_diagonal() {
+    fn finished_even_diagonal() -> Result<(), &'static str> {
         let player1 = Player::new("SeeZee");
         let player2 = Player::new("Moak");
         let mut game = XOGame::new(3, &player1, &player2);
 
-        game.place(&player1, 0, 0);
-        game.place(&player1, 1, 1);
-        game.place(&player1, 2, 2);
+        game.place(&player1, 0, 0)?;
+        game.place(&player1, 1, 1)?;
+        game.place(&player1, 2, 2)?;
         assert!(game.finished());
+        Ok(())
     }
 
     #[test]
-    fn finished_odd_diagonal() {
+    fn finished_odd_diagonal() -> Result<(), &'static str> {
         let player1 = Player::new("SeeZee");
         let player2 = Player::new("Moak");
         let mut game = XOGame::new(3, &player1, &player2);
 
-        game.place(&player1, 2, 0);
-        game.place(&player1, 1, 1);
-        game.place(&player1, 0, 2);
+        game.place(&player1, 2, 0)?;
+        game.place(&player1, 1, 1)?;
+        game.place(&player1, 0, 2)?;
         assert!(game.finished());
+        Ok(())
     }
 
     #[test]

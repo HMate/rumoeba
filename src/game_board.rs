@@ -85,7 +85,7 @@ mod tests {
     #[should_panic]
     fn panic_when_read_out_of_board() {
         let b = Board::new(5);
-        let mark = b.read(3, 5);
+        b.read(3, 5);
     }
 
     #[test]

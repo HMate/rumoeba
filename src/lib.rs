@@ -9,9 +9,6 @@ pub mod xogame;
 pub mod awesome_mode;
 mod game_board;
 
-const MIN_BOARD_SIZE: BoardSizeT = 3;
-const MAX_BOARD_SIZE: BoardSizeT = 25;
-
 
 pub fn start_game() {
     ui::show_message("What dimensions are we talking about?");
@@ -61,7 +58,7 @@ fn read_board_size() -> BoardSizeT {
             continue;
         }
         if let Ok(parsed_number) = user_input.trim().parse::<BoardSizeT>() {
-            if MIN_BOARD_SIZE <= parsed_number && parsed_number < MAX_BOARD_SIZE {
+            if xogame::MIN_BOARD_SIZE <= parsed_number && parsed_number < xogame::MAX_BOARD_SIZE {
                 return parsed_number;
             }
         }
